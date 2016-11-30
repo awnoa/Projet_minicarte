@@ -8,7 +8,7 @@ public class Application {
 	
 	public static void main(String args[]){
 		CsvReader reader = new CsvReader();
-		HashMap<String, ArrayList<String>> museesArray = reader.read(System.getProperty("user.dir")+"/src/MonumentsHistoriquesFrancheComte.csv");
+		HashMap<String, ArrayList<String>> museesArray = reader.read(System.getProperty("user.dir")+"/data/MonumentsHistoriquesFrancheComte.csv");
 		System.out.println(museesArray);
 	}
 }
