@@ -10,7 +10,7 @@ public class Application {
 
 	public static void main(String args[]) {
 		MapModel model = new MapModel();
-		MapView app = new MapView(model);;
+		MapView app = new MapView(model);
 	}
 	/*
 	public static void main(String args[]){
