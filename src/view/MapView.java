@@ -56,7 +56,7 @@ public class MapView extends JFrame {
     	JPanel panNote1 = new JPanel();
     	panNote1.add(labMap);
 
-    	JPanel panNote2 = new JPanel();
+    	JPanel panNote2 = new JPanel(new GridLayout(1, 2));
     	panNote2.add(rbMusee);
     	panNote2.add(rbMonument);
     	
