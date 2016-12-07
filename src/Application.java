@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
 
+import controler.MapControler;
 import view.MapView;
 import model.CsvReader;
 import model.MapModel;
@@ -9,8 +10,7 @@ import model.MapModel;
 public class Application {
 
 	public static void main(String args[]) {
-		MapModel model = new MapModel();
-		MapView app = new MapView(model);
+		MapControler m = new MapControler();
 	}
 	/*
 	public static void main(String args[]){

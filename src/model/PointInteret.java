@@ -12,6 +12,9 @@ public class PointInteret {
 	String categorie;
 	
 	
+	public PointInteret() {
+	}
+	
 	public PointInteret(float latitude, float longitude, int departement, String commune, int numInsee, String nom,
 			String description) {
 		super();

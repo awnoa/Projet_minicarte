@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Musee extends PointInteret {
 
 	String adresse;
@@ -10,17 +13,23 @@ public class Musee extends PointInteret {
 	String facebook;
 
 
-	public Musee(float latitude, float longitude, int departement, String commune, int numInsee, String nom,
-			String description, String adresse, String acces, String telephone, String email, String siteInternet, String facebook,
-			int codePostal) {
-		super(latitude, longitude, departement, commune, numInsee, nom, description);
-		this.adresse = adresse;
-		this.acces = acces;
-		this.telephone = telephone;
-		this.email = email;
-		this.siteInternet = siteInternet;
-		this.facebook = facebook;
-		this.codePostal = codePostal;
+
+	public Musee(HashMap<String, String> dataMusee) {
+		
+		this.latitude = Float.valueOf(dataMusee.get("Latitude")); ;
+		this.longitude = Float.valueOf(dataMusee.get("Longitude"));;
+		this.departement = Integer.valueOf(dataMusee.get("CodePostal"));
+		this.commune = dataMusee.get("Commune");
+		this.numInsee = Integer.valueOf(dataMusee.get("NumInsee"));
+		this.nom = dataMusee.get("Nom");
+		this.description = dataMusee.get("DescriptifLong");
+		this.adresse = dataMusee.get("Adresse");
+		this.acces = dataMusee.get("Acces");
+		this.telephone = dataMusee.get("Telephone");
+		this.email = dataMusee.get("Courriel");
+		this.siteInternet = dataMusee.get("SiteInternet");
+		this.facebook = dataMusee.get("Facebook");
+		this.codePostal = Integer.valueOf(dataMusee.get("CodePostal"));
 	}
 	public String getAdresse() {
 		return adresse;
