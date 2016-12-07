@@ -14,9 +14,11 @@ import java.io.IOException;
 public class MapView extends JFrame {
 
 	private BufferedImage imageMap;
+	ImageIcon icon = new ImageIcon(System.getProperty("user.dir")+"/images/croix.png");
+	JLabel iconLabel;
 	private JLabel labMap;
-    private JRadioButton rbMusee;
-    private JRadioButton rbMonument;   
+    private JCheckBox rbMusee;
+    private JCheckBox rbMonument;   
     private MapModel model;
     
     public MapView(MapModel model) {
@@ -24,7 +26,7 @@ public class MapView extends JFrame {
     	initAttribut();
     	creerVue();
     	
-    	setTitle("Musées et monuments historiques");
+    	setTitle("Carte interactive des musées et monuments historiques de Franche-Comté");
     	setLocation(0, 0);
     	setResizable(false);
     	pack();
@@ -44,17 +46,22 @@ public class MapView extends JFrame {
 		}
 
     	
-    	rbMusee = new JRadioButton("Musées", true);
-    	rbMonument = new JRadioButton("Monuments historique", false);
-    	ButtonGroup bgOp = new ButtonGroup();
-    	bgOp.add(rbMusee);
-    	bgOp.add(rbMonument);
+    	rbMusee = new JCheckBox("Musées");
+    	rbMonument = new JCheckBox("Monuments historique");
+    	iconLabel = new JLabel(icon);
     }
     
     public void creerVue() {
     	
     	JPanel panNote1 = new JPanel();
+    	panNote1.setBackground(Color.red);
+
     	panNote1.add(labMap);
+    	
+    	panNote1.add(iconLabel);
+    	iconLabel.setLocation(100, 100);
+    	
+
 
     	JPanel panNote2 = new JPanel(new GridLayout(1, 2));
     	panNote2.add(rbMusee);
