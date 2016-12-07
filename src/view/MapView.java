@@ -84,23 +84,23 @@ public class MapView extends JFrame {
 	public void addIcon(ImageIcon i, float x, float y){
 		JLabel label = new JLabel(i);
 		this.labMap.add(label);
-		label.setLocation(toMapCoordX(x, imageMap.getHeight()),toMapCoordY(y, imageMap.getHeight()));
+		label.setLocation(toMapCoordX(x, imageMap.getWidth(), i.getIconWidth()),toMapCoordY(y, imageMap.getHeight(), i.getIconHeight()));
 		label.setSize(i.getIconWidth(),i.getIconHeight());
 	}
-	public int toMapCoordX(float x , int width){
+	public int toMapCoordX(float x , int width, int iconWidth){
 		float mapStart = 48.25f;
 		float mapWidth = -1.953f;
 
 
-		return (int) (((x-mapStart) / mapWidth ) * (width));
+		return (int) (((x-mapStart) / mapWidth ) * (width)) - iconWidth;
 
 	}
-	public int toMapCoordY(float y, int height){
+	public int toMapCoordY(float y, int height, int iconHeight){
 		float mapStart = 5.25f;
 		float mapHeight = 4.98f;
 		//System.out.println(y);
 
-		return (int) (((y-mapStart) / mapHeight) * (height));
+		return (int) (((y-mapStart) / mapHeight) * (height)) - iconHeight;
 
 	}
 }
