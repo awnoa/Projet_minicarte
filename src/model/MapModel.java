@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,6 +8,7 @@ import java.util.Iterator;
 public class MapModel {
 
 	ArrayList<PointInteret> data;
+	public HashMap<String, ArrayList<PointInteret>> categories;
 
 	public ArrayList<PointInteret> getData() {
 		return data;
@@ -14,21 +16,27 @@ public class MapModel {
 	CsvReader cr =  new CsvReader();
 
 	public MapModel() {
-		
+
 		data = new ArrayList<>();
-		createMusees();
+		categories = new HashMap<>();
+
+		populateMusees();
+		populateMonuments();
 
 	}
 
-	void createMusees(){
+	public ArrayList<PointInteret> getCategorie(String key){
+		return this.categories.get(key);
+	}
+	void populateMusees(){
 		HashMap<String, ArrayList<String>> rawData;
 		rawData = cr.read(System.getProperty("user.dir")+"/data/Musee.csv");
-		int lineCount ;
 
 		Iterator iter = rawData.keySet().iterator();
 
 		String first = (String) iter.next();
 		HashMap<String,String> dataMusee ;
+		Musee musee;
 		
 		for (int i = 0; i < rawData.get(first).size(); i++) {
 			dataMusee = new HashMap<>();
@@ -36,12 +44,48 @@ public class MapModel {
 			for(String key : rawData.keySet()){
 				dataMusee.put(key, rawData.get(key).get(i));
 			}
-			data.add(new Musee(dataMusee));
+			musee = new Musee(dataMusee);
+
+			data.add(musee);
+			if(!categories.keySet().contains(musee.getCategorie())){
+				ArrayList<PointInteret> pts = new ArrayList<>();
+				pts.add(musee);
+				categories.put(musee.getCategorie(), pts);
+			}
+			else {
+				categories.get(musee.getCategorie()).add(musee);
+
+			}
+
 		}
 	}
-	void createMonuments(){
-		HashMap<String, ArrayList<String>> rawData;
-		rawData = cr.read(System.getProperty("user.dir")+"/data/Musee.csv");
 
+	void populateMonuments(){
+
+		HashMap<String, ArrayList<String>> rawData;
+		rawData = cr.read(System.getProperty("user.dir")+"/data/MonumentsHistoriquesFrancheComte.csv");
+		Iterator iter = rawData.keySet().iterator();
+
+		String first = (String) iter.next();
+		HashMap<String,String> dataMonuments ;
+		MonumentHistorique monumentHistorique;
+		for (int i = 0; i < rawData.get(first).size(); i++) {
+			dataMonuments = new HashMap<>();
+
+			for(String key : rawData.keySet()){
+				//System.out.println(key+":"+rawData.get(key).get(i));
+				dataMonuments.put(key, rawData.get(key).get(i));
+			}
+			monumentHistorique = new MonumentHistorique(dataMonuments);
+			data.add(monumentHistorique);
+			if(!categories.keySet().contains(monumentHistorique.getCategorie())){
+				ArrayList<PointInteret> pts = new ArrayList<>();
+				pts.add(monumentHistorique);
+				categories.put(monumentHistorique.getCategorie(), pts);
+			}
+			else {
+				categories.get(monumentHistorique.getCategorie()).add(monumentHistorique);
+			}
+		}
 	}
 }

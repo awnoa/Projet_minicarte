@@ -69,6 +69,14 @@ public class PointInteret {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(String categorie) {
+		this.categorie = categorie;
+	}
 	
 	
 }

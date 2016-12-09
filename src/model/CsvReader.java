@@ -45,7 +45,7 @@ public class CsvReader {
 				}
 				else {
 
-					lineSplitted = sCurrentLine.split("\\t");
+					lineSplitted = sCurrentLine.split("\\\t");
 					/* Decommenter pour voir quelle ligne pose problem */
 					//	if(lineSplitted.length<keys.length)
 					//		System.out.println(sCurrentLine);

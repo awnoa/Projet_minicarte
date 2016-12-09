@@ -1,24 +1,33 @@
 package model;
 
 import java.sql.Date;
+import java.util.HashMap;
 
 public class MonumentHistorique extends PointInteret {
 
 	String proprietaire;
-	Date date;
+	String date;
 	String protection;
 	String auteur;
 	String siecle;
 
 
-	public MonumentHistorique(float latitude, float longitude, int departement, String commune, int numInsee, String nom,
-			String description, String proprietaire, Date date, String protection, String auteur, String siecle) {
-		super(latitude, longitude, departement, commune, numInsee, nom, description);
-		this.proprietaire = proprietaire;
-		this.date = date;
-		this.protection = protection;
-		this.auteur = auteur;
-		this.siecle = siecle;
+	
+	public MonumentHistorique(HashMap<String, String> dataMonuments) {
+		
+		this.categorie = dataMonuments.get("catégorie");
+		this.latitude = Float.valueOf(dataMonuments.get("latitude")); ;
+		this.longitude = Float.valueOf(dataMonuments.get("longitude"));;
+		this.departement = Integer.valueOf(dataMonuments.get("département"));
+		this.commune = dataMonuments.get("commune");
+		this.numInsee = Integer.valueOf(dataMonuments.get("INSEE"));
+		this.nom = dataMonuments.get("designation");
+		this.description = dataMonuments.get("description");
+		this.proprietaire = dataMonuments.get("propriétaire");
+		this.date = dataMonuments.get("date protection");
+		this.protection = dataMonuments.get("date protection");
+		this.auteur = dataMonuments.get("auteur(s)");
+		this.siecle = dataMonuments.get("siècle");
 	}
 	public String getProprietaire() {
 		return proprietaire;
@@ -26,10 +35,10 @@ public class MonumentHistorique extends PointInteret {
 	public void setProprietaire(String proprietaire) {
 		this.proprietaire = proprietaire;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public String getProtection() {

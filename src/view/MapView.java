@@ -1,25 +1,32 @@
 package view;
 
 import model.MapModel;
+import model.PointInteret;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MapView extends JFrame {
 
-	private BufferedImage imageMap;
-	ImageIcon icon = new ImageIcon(System.getProperty("user.dir")+"/images/croix.png");
+	private ImageIcon imageMap;
+	BufferedImage icon ;
+	BufferedImage icontest;
 	JLabel iconLabel;
-	private JLabel labMap;
-	private JCheckBox rbMusee;
-	private JCheckBox rbMonument;   
+	private MapPanel labMap;
+	private ArrayList<JCheckBox> categories;
 	private MapModel model;
+
+	private MapPanel mapPaneltest;
 
 	public MapView(MapModel model) {
 		this.model = model;
@@ -31,76 +38,112 @@ public class MapView extends JFrame {
 		setResizable(false);
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
+		changeDisplay(true);
 	}
 
 	public void initAttribut() {
 
 		try {
-			imageMap = ImageIO.read(new File(System.getProperty("user.dir")+"/images/carte.jpg"));
-			labMap = new JLabel(new ImageIcon(imageMap));
-			add(labMap);
+			imageMap = new ImageIcon(System.getProperty("user.dir")+"/images/carte.jpg");
+			icontest = ImageIO.read(new File(System.getProperty("user.dir")+"/images/musee.png"));
+			icon = ImageIO.read(new File(System.getProperty("user.dir")+"/images/musee.png"));
+			labMap = new MapPanel(imageMap);
+			mapPaneltest = new MapPanel(imageMap);
+			mapPaneltest.setBackground(Color.red);
+			add(mapPaneltest);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		categories = new ArrayList<>();
+		for (Iterator iterator = model.categories.keySet().iterator(); iterator.hasNext();) {
+			String s = (String) iterator.next();
+			this.categories.add(new JCheckBox(s));
 
+			this.categories.get(this.categories.size()-1).addActionListener(new ActionListener() {
 
-		rbMusee = new JCheckBox("Musées");
-		rbMonument = new JCheckBox("Monuments historique");
-		iconLabel = new JLabel(icon);
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					JCheckBox c = (JCheckBox) arg0.getSource();
+					if(c.isSelected())
+						displayCategorie(s);
+					else
+						hideCategorie(s);
+						
+
+				}
+			});
+		}
 	}
 
 	public void creerVue() {
 
 		JPanel panNote1 = new JPanel();
-		panNote1.setBackground(Color.red);
+		panNote1.setLayout(new BorderLayout());
 
-
-		for (int i = 0; i < model.getData().size(); i++) {
-			addIcon(icon,model.getData().get(i).getLatitude(),model.getData().get(i).getLongitude());
-		}
 		panNote1.add(labMap);
 
+		int nbLigneCheckBox = (categories.size() - categories.size()%3)/3 +1;
+		JPanel panNote2 = new JPanel(new GridLayout( nbLigneCheckBox,3));//TODO faire calcul pour un bon grid layout
 
-
-
-		JPanel panNote2 = new JPanel(new GridLayout(1, 2));
-		panNote2.add(rbMusee);
-		panNote2.add(rbMonument);
-
+		for (JCheckBox jCheckBox : categories) {
+			panNote2.add(jCheckBox);
+		}
 		JPanel panAll = new JPanel();
-		panAll.setLayout(new BoxLayout(panAll, BoxLayout.X_AXIS));
+		panAll.setLayout(new GridLayout(1, 2));
 		panAll.add(panNote1);
 		panAll.add(panNote2);
-
 		setContentPane(panAll);
+
+		//		for (int i = 0; i < model.getData().size(); i++) {
+		//			addIcon(icon,model.getData().get(i).getLongitude(),model.getData().get(i).getLatitude());
+		//		}
 	}
 
 
 	public void changeDisplay(boolean visibility) {
 		setVisible(visibility);
 	}
-	public void addIcon(ImageIcon i, float x, float y){
-		JLabel label = new JLabel(i);
-		this.labMap.add(label);
-		label.setLocation(toMapCoordX(x, imageMap.getWidth(), i.getIconWidth()),toMapCoordY(y, imageMap.getHeight(), i.getIconHeight()));
-		label.setSize(i.getIconWidth(),i.getIconHeight());
+	public void addIcon(ImageIcon i, String key, float x, float y){
+		labMap.addPointInteret(new PointInteretView(
+				i,key,
+				toMapCoordX(x, imageMap.getIconWidth(), i.getIconWidth()),
+				toMapCoordY(y, imageMap.getIconHeight(), i.getIconHeight())
+				));
 	}
 	public int toMapCoordX(float x , int width, int iconWidth){
-		float mapStart = 48.25f;
-		float mapWidth = -1.953f;
+		float mapStart = 5.25f;
+		float mapEnd = 7.23f;
+
+		float mapWidth = mapEnd - mapStart;
 
 
-		return (int) (((x-mapStart) / mapWidth ) * (width)) - iconWidth;
+		return (int) (((x-mapStart) / mapWidth ) * (width)) - iconWidth/2  ;
 
 	}
-	public int toMapCoordY(float y, int height, int iconHeight){
-		float mapStart = 5.25f;
-		float mapHeight = 4.98f;
+	public int toMapCoordY(float y, float height, int iconHeight){
+		float mapStart = 48.183f;
+		float mapEnd = 46.23f;
+
+		float mapHeight = mapEnd - mapStart;
 		//System.out.println(y);
 
-		return (int) (((y-mapStart) / mapHeight) * (height)) - iconHeight;
+		return (int) (((y-mapStart) / mapHeight) * (height)) - iconHeight/2;
 
+	}
+	public void displayCategorie(String key){
+		String withoutAccent = Normalizer.normalize(key, Normalizer.Form.NFD);
+		withoutAccent = withoutAccent.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+		withoutAccent = withoutAccent.trim();
+		ImageIcon i = new ImageIcon(System.getProperty("user.dir")+"/images/"+withoutAccent+".png");
+		//System.out.println("j'affiche"+withoutAccent+".png");
+
+		for (PointInteret pt : this.model.getCategorie(key)) {
+			addIcon(i,key, pt.getLongitude(), pt.getLatitude());
+		}
+		
+	}
+	public void hideCategorie(String key){
+		labMap.removePointInteretView(key);
 	}
 }
