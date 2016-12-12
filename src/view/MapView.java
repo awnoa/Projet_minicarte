@@ -57,18 +57,19 @@ public class MapView extends JFrame {
 		}
 		categories = new ArrayList<>();
 		for (Iterator iterator = model.categories.keySet().iterator(); iterator.hasNext();) {
-			String s = (String) iterator.next();
-			this.categories.add(new JCheckBox(s));
+			final String currentString = (String) iterator.next();
+			//System.out.println(currentString);
+			this.categories.add(new JCheckBox(currentString));
 
 			this.categories.get(this.categories.size()-1).addActionListener(new ActionListener() {
-
+				
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					JCheckBox c = (JCheckBox) arg0.getSource();
 					if(c.isSelected())
-						displayCategorie(s);
+						displayCategorie(currentString);
 					else
-						hideCategorie(s);
+						hideCategorie(currentString);
 						
 
 				}
@@ -132,6 +133,7 @@ public class MapView extends JFrame {
 
 	}
 	public void displayCategorie(String key){
+		//System.out.println(key);
 		String withoutAccent = Normalizer.normalize(key, Normalizer.Form.NFD);
 		withoutAccent = withoutAccent.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
 		withoutAccent = withoutAccent.trim();
