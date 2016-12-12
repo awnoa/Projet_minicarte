@@ -90,10 +90,15 @@ public class MapView extends JFrame {
 		for (JCheckBox jCheckBox : categories) {
 			panNote2.add(jCheckBox);
 		}
+		JPanel panDroite = new JPanel(new GridLayout(2, 1));//panel moitié droite
+		JPanel panDroiteBas = new JPanel();
+		
+		panDroite.add(panNote2);
+		panDroite.add(panDroiteBas);
 		JPanel panAll = new JPanel();
 		panAll.setLayout(new GridLayout(1, 2));
 		panAll.add(panNote1);
-		panAll.add(panNote2);
+		panAll.add(panDroite);
 		setContentPane(panAll);
 
 		//		for (int i = 0; i < model.getData().size(); i++) {
