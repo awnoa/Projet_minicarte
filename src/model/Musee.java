@@ -16,7 +16,7 @@ public class Musee extends PointInteret {
 
 	public Musee(HashMap<String, String> dataMusee) {
 		
-		this.categorie = "Musée";
+		this.categorie = "musee";
 		this.latitude = Float.valueOf(dataMusee.get("Latitude")); ;
 		this.longitude = Float.valueOf(dataMusee.get("Longitude"));;
 		this.departement = Integer.valueOf(dataMusee.get("CodePostal"));
