@@ -45,7 +45,7 @@ public class PointInteretView {
 
 	public String getCategorie() {
 		// TODO Auto-generated method stub
-		return categorie;
+		return categorie ;
 	}
 
 }
