@@ -73,8 +73,22 @@ public class MapView extends JFrame {
 						
 
 				}
-			});
+			});			
 		}
+		this.categories.add(new JCheckBox("tout (dé)sélectionner"));
+		this.categories.get(this.categories.size()-1).addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JCheckBox c = (JCheckBox) arg0.getSource();
+				if(c.isSelected())
+					displayAllCategorie();
+				else
+					hideAllCategorie();
+					
+			}
+		});			
+
 	}
 
 	public void creerVue() {
@@ -148,9 +162,24 @@ public class MapView extends JFrame {
 		for (PointInteret pt : this.model.getCategorie(key)) {
 			addIcon(i,key, pt.getLongitude(), pt.getLatitude());
 		}
-		
 	}
 	public void hideCategorie(String key){
 		labMap.removePointInteretView(key);
+	}
+	public void displayAllCategorie(){
+		for (JCheckBox cb : categories) {
+			if (! cb.isSelected()) {
+				cb.setSelected(true);
+				displayCategorie(cb.getText());
+			}
+		}
+	}
+	public void hideAllCategorie() {
+		for (JCheckBox cb : categories) {
+			if (cb.isSelected()) {
+				cb.setSelected(false);
+				hideCategorie(cb.getText());
+			}
+		}
 	}
 }
