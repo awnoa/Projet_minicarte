@@ -25,6 +25,7 @@ public class MapView extends JFrame {
 	private MapPanel labMap;
 	private ArrayList<JCheckBox> categories;
 	private MapModel model;
+	private JTextField saisieNom;
 
 	private MapPanel mapPaneltest;
 
@@ -97,7 +98,9 @@ public class MapView extends JFrame {
 		panNote1.setLayout(new BorderLayout());
 
 		panNote1.add(labMap);
-
+		
+		JTabbedPane panTab = new JTabbedPane();
+		
 		int nbLigneCheckBox = (categories.size() - categories.size()%3)/3 +1;
 		JPanel panNote2 = new JPanel(new GridLayout( nbLigneCheckBox,3));//TODO faire calcul pour un bon grid layout
 
@@ -107,8 +110,27 @@ public class MapView extends JFrame {
 		JPanel panDroite = new JPanel(new GridLayout(2, 1));//panel moitié droite
 		JPanel panDroiteBas = new JPanel();
 		
-		panDroite.add(panNote2);
+		panTab.addTab("Catégorie", null, panNote2, "Sélection avec la catégorie");
+		
+		panTab.addTab("Lieu", null, new JPanel(), "Sélection avec le lieu");
+		
+		JPanel tmpNom = new JPanel(new GridLayout(3,1));
+		tmpNom.add(new JLabel("Saisie du nom :"));
+		saisieNom = new JTextField();
+		tmpNom.add(saisieNom);
+		JButton valider = new JButton("Valider");
+		valider.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) { 
+				    System.out.println("recherche avec "+saisieNom.getText());
+			} 
+		});
+		tmpNom.add(valider);
+		
+		panTab.addTab("Nom", null, tmpNom, "Sélection avec le nom");
+		
+		panDroite.add(panTab);
 		panDroite.add(panDroiteBas);
+		
 		JPanel panAll = new JPanel();
 		panAll.setLayout(new GridLayout(1, 2));
 		panAll.add(panNote1);
