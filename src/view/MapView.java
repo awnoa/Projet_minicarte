@@ -112,8 +112,115 @@ public class MapView extends JFrame {
 		
 		panTab.addTab("Catégorie", null, panNote2, "Sélection avec la catégorie");
 		
-		panTab.addTab("Lieu", null, new JPanel(), "Sélection avec le lieu");
 		
+		
+		// panel emplacement géographique prototype
+		SpinnerNumberModel modelMinLatitude = new SpinnerNumberModel(46.23, 46.23, 48.183, 0.1); 
+		SpinnerNumberModel modelMaxLatitude = new SpinnerNumberModel(48.183, 46.23, 48.183, 0.1); 
+		SpinnerNumberModel modelMinLongitude = new SpinnerNumberModel(5.25, 5.25, 7.23, 0.1); 
+		SpinnerNumberModel modelMaxLongitude = new SpinnerNumberModel(7.23, 5.25, 7.23, 0.1); 
+
+		JPanel tmpLieu = new JPanel(new GridLayout(3,0));
+		
+		JPanel tmpLatitude = new JPanel(new GridLayout(0, 2)); // alignement horizontal
+		Border border1 = BorderFactory.createTitledBorder("Latitude");
+		tmpLatitude.setBorder(border1);
+		
+		JPanel tmpLatitude2 = new JPanel();
+		tmpLatitude2.add(new JLabel("Min"));
+		JSpinner minLatitude = new JSpinner(modelMinLatitude);
+		tmpLatitude2.add(minLatitude);
+		
+		JPanel tmpLatitude3 = new JPanel();
+		tmpLatitude3.add(new JLabel("Max"));
+		JSpinner maxLatitude = new JSpinner(modelMaxLatitude);
+		tmpLatitude3.add(maxLatitude);
+		
+		tmpLatitude.add(tmpLatitude2);
+		tmpLatitude.add(tmpLatitude3);
+		
+		JPanel tmpLongitude = new JPanel(new GridLayout(0, 2)); // aligmeent h
+		Border border2 = BorderFactory.createTitledBorder("Longitude");
+		tmpLongitude.setBorder(border2);
+		
+		JPanel tmpLongitude2 = new JPanel();
+		tmpLongitude2.add(new JLabel("Min"));
+		JSpinner minLongitude = new JSpinner(modelMinLongitude);
+		tmpLongitude2.add(minLongitude);
+		
+		JPanel tmpLongitude3 = new JPanel();
+		tmpLongitude3.add(new JLabel("Max"));
+		JSpinner maxLongitude = new JSpinner(modelMaxLongitude);
+		tmpLongitude3.add(maxLongitude);
+		
+		tmpLongitude.add(tmpLongitude2);
+		tmpLongitude.add(tmpLongitude3);
+		
+		
+		JPanel tmpAdresse = new JPanel(new GridLayout(0, 2)); // aligmeent h
+		Border border3 = BorderFactory.createTitledBorder("Adresse");
+		tmpAdresse.setBorder(border3);
+		
+		JPanel tmpAdresse2 = new JPanel();
+		tmpAdresse2.add(new JLabel("Département"));
+		
+		// construire le modèle dynamique avec les départements
+		DefaultListModel listModel = new DefaultListModel();
+		listModel.addElement("Tout");
+		listModel.addElement("90");
+		listModel.addElement("70");
+		listModel.addElement("39");
+		listModel.addElement("25");
+
+		JList listDepartements = new JList(listModel);
+		listDepartements.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listDepartements.setSelectedIndex(0);
+		listDepartements.setVisibleRowCount(1);
+
+		//Ajouter les barres défilantes 
+		JScrollPane listScrollPane = new JScrollPane(listDepartements);
+
+		/*
+		listDepartements.addListSelectionListener(new ListSelectionListener(){﻿
+		     public void valueChanged(ListSelectionEvent e) {
+					//System.out.println(list.getSelectedIndex());
+		     }
+		});
+		*/
+		
+		tmpAdresse2.add(listDepartements);
+		
+		JPanel tmpAdresse3 = new JPanel();
+		tmpAdresse3.add(new JLabel("Commune"));
+		
+		tmpAdresse.add(tmpAdresse2);
+		tmpAdresse.add(tmpAdresse3);
+		
+		// pareil remplir dynamiquement
+		DefaultListModel listModel2 = new DefaultListModel();
+		listModel2.addElement("Tout");
+		listModel2.addElement("issou");
+		listModel2.addElement("la chancla");
+		listModel2.addElement("el bagnalo");
+		listModel2.addElement("yankatagi");
+		
+		JList listCommunes = new JList(listModel2);
+		listCommunes.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		listCommunes.setSelectedIndex(0);
+		listCommunes.setVisibleRowCount(1);
+		
+		/* listerner */
+		tmpAdresse3.add(listCommunes);
+		
+		tmpLieu.add(tmpLatitude);
+		tmpLieu.add(tmpLongitude);
+		tmpLieu.add(tmpAdresse);
+		
+		panTab.addTab("Lieu", null, tmpLieu, "Sélection avec le lieu");
+		
+		
+		
+		// panel nom prototype
 		JPanel tmpNom = new JPanel(new GridLayout(3,1));
 		tmpNom.add(new JLabel("Saisie du nom :"));
 		saisieNom = new JTextField();

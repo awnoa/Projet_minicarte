@@ -3,12 +3,14 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 public class MapModel {
 
 	ArrayList<PointInteret> data;
 	public HashMap<String, ArrayList<PointInteret>> categories;
+	public HashSet<String> communes; // test
 
 	public ArrayList<PointInteret> getData() {
 		return data;
@@ -19,9 +21,12 @@ public class MapModel {
 
 		data = new ArrayList<>();
 		categories = new HashMap<>();
+		communes = new HashSet<String>();
 
 		populateMusees();
 		populateMonuments();
+		
+		System.out.println(communes.size());
 
 	}
 
@@ -56,6 +61,8 @@ public class MapModel {
 				categories.get(musee.getCategorie()).add(musee);
 
 			}
+			
+			communes.add(musee.getCommune());
 
 		}
 	}
@@ -86,6 +93,7 @@ public class MapModel {
 			else {
 				categories.get(monumentHistorique.getCategorie()).add(monumentHistorique);
 			}
+			communes.add(monumentHistorique.getCommune());
 		}
 	}
 }
