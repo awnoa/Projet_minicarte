@@ -10,7 +10,13 @@ import model.MapModel;
 public class Application {
 
 	public static void main(String args[]) {
-		MapControler m = new MapControler();
+		
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+	          public void run() {
+	        	  MapControler m = new MapControler();
+	        	 
+	          }
+		});
 	}
 	/*
 	public static void main(String args[]){
