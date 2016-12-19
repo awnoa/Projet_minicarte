@@ -30,9 +30,7 @@ public class MapPanel extends JPanel{
 		super.paintComponent(g);
 		g.drawImage(mapImage.getImage(), 0, 0, null);
 		setPreferredSize(getPreferredSize());	
-		
-		revalidate();
-		repaint();
+
 	}
 	
 	@Override

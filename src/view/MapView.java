@@ -337,11 +337,14 @@ public class MapView extends JFrame {
 		for (PointInteret pt : this.model.getCategorie(key)) {
 			addIcon(i,key, pt.getLongitude(), pt.getLatitude());
 		}
+		labMap.repaint();
+		
 	}
 	
 	public void hideCategorie(String key){
 		
 		labMap.removePointInteretView(key);
+		labMap.repaint();
 	}
 	
 	public void displayAllCategorie(){
