@@ -1,5 +1,9 @@
 package view;
 
+/*
+ * Si on diminue le spinner alors on remove de la liste
+ * si on augmente on remove tout de la list et on remplie avec les cb cochés + si les conditions sont vérifiées
+ */
 import model.ModelApp;
 import model.PointInteret;
 
@@ -27,6 +31,11 @@ public class ViewApp extends JFrame {
 	private ArrayList<JCheckBox> categories;
 	private ModelApp model;
 	private JTextField saisieNom;
+	
+	private JSpinner spinMinLatitude;
+	private JSpinner spinMaxLatitude;
+	private JSpinner spinMinLongitude;
+	private JSpinner spinMaxLongitude;
 
 	private MapPanel mapPaneltest;
 
@@ -167,13 +176,13 @@ public class ViewApp extends JFrame {
 		
 		JPanel panLatitudeMin = new JPanel();
 		panLatitudeMin.add(new JLabel("Min"));
-		JSpinner minLatitude = new JSpinner(modelMinLatitude);
-		panLatitudeMin.add(minLatitude);
+		spinMinLatitude = new JSpinner(modelMinLatitude);
+		panLatitudeMin.add(spinMinLatitude);
 		
 		JPanel panLatitudeMax = new JPanel();
 		panLatitudeMax.add(new JLabel("Max"));
-		JSpinner maxLatitude = new JSpinner(modelMaxLatitude);
-		panLatitudeMax.add(maxLatitude);
+		spinMaxLatitude = new JSpinner(modelMaxLatitude);
+		panLatitudeMax.add(spinMaxLatitude);
 		
 		panLatitude.add(panLatitudeMin);
 		panLatitude.add(panLatitudeMax);
@@ -193,13 +202,13 @@ public class ViewApp extends JFrame {
 		
 		JPanel panLongitudeMin = new JPanel();
 		panLongitudeMin.add(new JLabel("Min"));
-		JSpinner minLongitude = new JSpinner(modelMinLongitude);
-		panLongitudeMin.add(minLongitude);
+		spinMinLongitude = new JSpinner(modelMinLongitude);
+		panLongitudeMin.add(spinMinLongitude);
 		
 		JPanel panLongitudeMax = new JPanel();
 		panLongitudeMax.add(new JLabel("Max"));
-		JSpinner maxLongitude = new JSpinner(modelMaxLongitude);
-		panLongitudeMax.add(maxLongitude);
+		spinMaxLongitude = new JSpinner(modelMaxLongitude);
+		panLongitudeMax.add(spinMaxLongitude);
 		
 		panLongitude.add(panLongitudeMin);
 		panLongitude.add(panLongitudeMax);
@@ -312,6 +321,13 @@ public class ViewApp extends JFrame {
 		}
 	}
 	
+	public void setControlSpinner(ChangeListener listener) {
+		spinMinLatitude.addChangeListener(listener);
+		spinMaxLatitude.addChangeListener(listener);
+		spinMinLongitude.addChangeListener(listener);
+		spinMaxLongitude.addChangeListener(listener);
+	}
+	
 	public void displayCategorie(String key){
 		
 		String withoutAccent = Normalizer.normalize(key, Normalizer.Form.NFD);
@@ -349,5 +365,21 @@ public class ViewApp extends JFrame {
 				hideCategorie(cb.getText());
 			}
 		}
+	}
+
+	public JSpinner getSpinnerLatitudeMin() {
+		return spinMinLatitude;
+	}
+	
+	public JSpinner getSpinnerLatitudeMax() {
+		return spinMaxLatitude;
+	}
+	
+	public JSpinner getSpinnerLongitudeMax() {
+		return spinMaxLongitude;
+	}
+	
+	public JSpinner getSpinnerLongitudeMin() {
+		return spinMinLongitude;
 	}
 }

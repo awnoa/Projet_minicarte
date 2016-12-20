@@ -3,7 +3,6 @@ import java.util.HashMap;
 import javax.swing.*;
 
 import controler.ControlApp;
-import controler.ControlGroup;
 import view.ViewApp;
 import model.CsvReader;
 import model.ModelApp;
@@ -16,8 +15,7 @@ public class App {
 	          public void run() {
 	        	  
 	        	  ModelApp model = new ModelApp();
-	    	      ControlGroup controler = new ControlGroup(model);
-	        	  ControlApp m = new ControlApp();
+	    	      ControlApp controler = new ControlApp(model);
 	        	 
 	          }
 		});
