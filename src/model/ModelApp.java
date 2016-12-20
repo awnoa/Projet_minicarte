@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class MapModel {
+public class ModelApp {
 
 	ArrayList<PointInteret> data;
 	public HashMap<String, ArrayList<PointInteret>> categories;
@@ -17,7 +17,7 @@ public class MapModel {
 	}
 	CsvReader cr =  new CsvReader();
 
-	public MapModel() {
+	public ModelApp() {
 
 		data = new ArrayList<>();
 		categories = new HashMap<>();

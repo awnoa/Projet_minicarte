@@ -15,9 +15,9 @@ import model.PointInteret;
 
 public class MapPanel extends JPanel{
 
-	BufferedImage icon;
-	ImageIcon mapImage;
-	ArrayList<PointInteretView> points ;
+	private BufferedImage icon;
+	private ImageIcon mapImage;
+	private ArrayList<PointInteretView> points ;
 
 	public MapPanel(ImageIcon imageMap) {
 		points = new ArrayList<>();
@@ -60,5 +60,4 @@ public class MapPanel extends JPanel{
 			}
 
 	}
-
 }

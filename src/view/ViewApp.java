@@ -1,12 +1,15 @@
 package view;
 
-import model.MapModel;
+import model.ModelApp;
 import model.PointInteret;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.*;
+
+import controler.ControlCheckBox;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -16,19 +19,18 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class MapView extends JFrame {
+public class ViewApp extends JFrame {
 
-	private ImageIcon imageMap;
 	private BufferedImage icon ;
 	private JLabel iconLabel;
 	private MapPanel labMap;
 	private ArrayList<JCheckBox> categories;
-	private MapModel model;
+	private ModelApp model;
 	private JTextField saisieNom;
 
 	private MapPanel mapPaneltest;
 
-	public MapView(MapModel model) {
+	public ViewApp(ModelApp model) {
 		
 		this.model = model;
 		initAttribut();
@@ -38,17 +40,15 @@ public class MapView extends JFrame {
 		setResizable(false);
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		changeDisplay(true);
 	}
 
 	public void initAttribut() {
 
 		try {
-			imageMap = new ImageIcon(System.getProperty("user.dir")+"/images/carte.jpg");
 			icon = ImageIO.read(new File(System.getProperty("user.dir")+"/images/musee.png"));
+			ImageIcon imageMap = new ImageIcon(System.getProperty("user.dir")+"/images/carte.jpg");
 			labMap = new MapPanel(imageMap);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		initCategories();
@@ -62,33 +62,11 @@ public class MapView extends JFrame {
 			//System.out.println(currentString);
 			this.categories.add(new JCheckBox(currentString));
 
-			this.categories.get(this.categories.size()-1).addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					JCheckBox c = (JCheckBox) arg0.getSource();
-					if(c.isSelected())
-						displayCategorie(currentString);
-					else
-						hideCategorie(currentString);
-						
-				}
-			});			
+			// 1
 		}
 		
 		this.categories.add(new JCheckBox("tout (dé)sélectionner"));
-		this.categories.get(this.categories.size()-1).addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				JCheckBox c = (JCheckBox) arg0.getSource();
-				if(c.isSelected())
-					displayAllCategorie();
-				else
-					hideAllCategorie();
-					
-			}
-		});			
+		// 2
 	}
 	
 	public void creerVue() {
@@ -304,8 +282,8 @@ public class MapView extends JFrame {
 		
 		labMap.addPointInteret(new PointInteretView(
 				i,key,
-				toMapCoordX(x, imageMap.getIconWidth(), i.getIconWidth()),
-				toMapCoordY(y, imageMap.getIconHeight(), i.getIconHeight())
+				toMapCoordX(x, labMap.getPreferredSize().width, i.getIconWidth()),
+				toMapCoordY(y, labMap.getPreferredSize().height, i.getIconHeight())
 				));
 	}
 	
@@ -326,6 +304,12 @@ public class MapView extends JFrame {
 		float mapHeight = mapEnd - mapStart;
 		
 		return (int) (((y-mapStart) / mapHeight) * (height)) - iconHeight/2;
+	}
+	
+	public void setCheckBoxControler(ActionListener listener) {
+		for (JCheckBox cb : categories) {
+			cb.addActionListener(listener);
+		}
 	}
 	
 	public void displayCategorie(String key){
