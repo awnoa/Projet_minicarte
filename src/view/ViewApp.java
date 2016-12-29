@@ -21,7 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 public class ViewApp extends JFrame {
 
@@ -36,8 +38,16 @@ public class ViewApp extends JFrame {
 	private JSpinner spinMaxLatitude;
 	private JSpinner spinMinLongitude;
 	private JSpinner spinMaxLongitude;
+	
+	private JList listDepartements;
+	private JList listCommunes;
+	
+	private JButton butValider;
+	
+	private DefaultListModel listModelCommunes;
 
 	private MapPanel mapPaneltest;
+	public InfosPointInteretView panInfoPointsInterets;
 
 	public ViewApp(ModelApp model) {
 		
@@ -70,12 +80,9 @@ public class ViewApp extends JFrame {
 			final String currentString = (String) iterator.next();
 			//System.out.println(currentString);
 			this.categories.add(new JCheckBox(currentString));
-
-			// 1
 		}
 		
 		this.categories.add(new JCheckBox("tout (dé)sélectionner"));
-		// 2
 	}
 	
 	public void creerVue() {
@@ -101,7 +108,8 @@ public class ViewApp extends JFrame {
 		JPanel panDroite = new JPanel(new GridLayout(2, 1));
 		
 		panDroite.add(creerPanCriteres());
-		panDroite.add(creerPanInformations());
+		creerPanInformations();
+		panDroite.add(panInfoPointsInterets);
 		
 		return panDroite;
 	}
@@ -117,9 +125,8 @@ public class ViewApp extends JFrame {
 		return panTab;
 	}
 	
-	private JPanel creerPanInformations() {
-		
-		return new JPanel();
+	private void creerPanInformations() {
+		panInfoPointsInterets = new InfosPointInteretView();
 	}
 	
 	private JPanel creerOngletCategorie()
@@ -148,18 +155,24 @@ public class ViewApp extends JFrame {
 	
 	private JPanel creerOngletNom()
 	{
+		Border borderNom = BorderFactory.createTitledBorder("Recherche par nom");
 		
-		JPanel panNom = new JPanel(new GridLayout(3,1));
-		panNom.add(new JLabel("Saisie du nom :"));
+		JPanel panNom = new JPanel();
+		panNom.setLayout(new BoxLayout(panNom, BoxLayout.Y_AXIS));
+		panNom.setBorder(borderNom);
+		
+		panNom.add(new JLabel("Saisie nom :"));
+		
+		panNom.add(Box.createVerticalStrut(10));
+		
 		saisieNom = new JTextField();
+		saisieNom.setMaximumSize(new Dimension(360, saisieNom.getPreferredSize().height));
 		panNom.add(saisieNom);
-		JButton valider = new JButton("Valider");
-		valider.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) { 
-				System.out.println("recherche avec "+saisieNom.getText());
-			} 
-		});
-		panNom.add(valider);
+		
+		panNom.add(Box.createVerticalStrut(10));
+		
+		butValider = new JButton("Valider");
+		panNom.add(butValider);
 		
 		return panNom;
 	}
@@ -232,25 +245,15 @@ public class ViewApp extends JFrame {
 		
 		JPanel panDepartement = new JPanel();
 		panDepartement.add(new JLabel("Département"));
+			
+		listDepartements = new JList(model.localisation.keySet().toArray());
 		
-		// construire le modèle dynamique avec les départements
-		DefaultListModel listModel = new DefaultListModel();
-		listModel.addElement("Tout");
-		listModel.addElement("90");
-		listModel.addElement("70");
-		listModel.addElement("39");
-		listModel.addElement("25");
-	
-		JList listDepartements = new JList(listModel);
-		listDepartements.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listDepartements.setSelectedIndex(0);
-		listDepartements.setVisibleRowCount(1);
+		listDepartements.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		listDepartements.setVisibleRowCount(4);
 	
 		JScrollPane listScrollPaneDep = new JScrollPane(listDepartements);
-		
-		// listener
-		
-		panDepartement.add(listDepartements);
+
+		panDepartement.add(listScrollPaneDep);
 		
 		return panDepartement;
 	}
@@ -261,23 +264,21 @@ public class ViewApp extends JFrame {
 		panCommune.add(new JLabel("Commune"));
 		
 		// remplir dynamique
-		DefaultListModel listModel2 = new DefaultListModel();
-		listModel2.addElement("Tout");
-		listModel2.addElement("issou");
-		listModel2.addElement("la chancla");
-		listModel2.addElement("el bagnalo");
-		listModel2.addElement("yankatagi");
+		listModelCommunes = new DefaultListModel();
+		listModelCommunes.addElement("Tout");
+		for (Entry<String, HashSet<String>> me : model.localisation.entrySet()) {
+		      for (String s : me.getValue()) {
+		    	  listModelCommunes.addElement(s);
+		      }
+		}
 		
-		JList listCommunes = new JList(listModel2);
+		listCommunes = new JList(listModelCommunes);
 		listCommunes.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		listCommunes.setSelectedIndex(0);
-		listCommunes.setVisibleRowCount(1);
+		listCommunes.setVisibleRowCount(5);
 		
 		JScrollPane listScrollPaneCom = new JScrollPane(listCommunes);
 		
-		// listener
-		
-		panCommune.add(listCommunes);
+		panCommune.add(listScrollPaneCom);
 		
 		return panCommune;
 	}
@@ -321,11 +322,21 @@ public class ViewApp extends JFrame {
 		}
 	}
 	
-	public void setControlSpinner(ChangeListener listener) {
+	public void setSpinnerControler(ChangeListener listener) {
 		spinMinLatitude.addChangeListener(listener);
 		spinMaxLatitude.addChangeListener(listener);
 		spinMinLongitude.addChangeListener(listener);
 		spinMaxLongitude.addChangeListener(listener);
+	}
+	
+	public void setListControler(ListSelectionListener listener) {
+		listDepartements.addListSelectionListener(listener);
+		listCommunes.addListSelectionListener(listener);
+	}
+	
+	public void setButtonControler(ActionListener listener) {
+		butValider.addActionListener(listener);
+		panInfoPointsInterets.setButtonControler(listener);
 	}
 	
 	public void displayCategorie(String key){
@@ -381,5 +392,21 @@ public class ViewApp extends JFrame {
 	
 	public JSpinner getSpinnerLongitudeMin() {
 		return spinMinLongitude;
+	}
+	
+	public JList getListDepartements() {
+		return listDepartements;
+	}
+	
+	public JList getListCommunes() {
+		return listCommunes;
+	}
+	
+	public JButton getButtonValider() {
+		return butValider;
+	}
+	
+	public JTextField getSaisieNom() {
+		return saisieNom;
 	}
 }

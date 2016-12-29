@@ -8,10 +8,24 @@ import java.util.Iterator;
 
 public class ModelApp {
 
+	// il faudrait que ce soit une hashset comme ça chaque element aurait un id entier
+	// ou alors on rajoute un id dans pointinteret
 	ArrayList<PointInteret> data;
+	
 	public HashMap<String, ArrayList<PointInteret>> categories;
-	public HashSet<String> communes; // test
+	
+	// pour liste departements & communes
+	public HashMap<String, HashSet<String>> localisation;
 
+	// avec l'id de chaque eleent on pourrait tenir independement une liste
+	// des points d'interets par criteres
+	// et on n'a plus qu'a afficher l'intersection
+	// donc les id present dans chaque liste
+	// a l'utilsiaeur (avec un test de vide avant pour ne pas prendre en compte si jamais)
+	public HashSet<Integer> idCritereCategories;
+	public HashSet<Integer> idCritereLocalisation;
+	public HashSet<Integer> idCritereNom;
+	
 	public ArrayList<PointInteret> getData() {
 		return data;
 	}
@@ -20,13 +34,12 @@ public class ModelApp {
 	public ModelApp() {
 
 		data = new ArrayList<>();
+		
 		categories = new HashMap<>();
-		communes = new HashSet<String>();
-
+		localisation = new HashMap<>();
+		
 		populateMusees();
 		populateMonuments();
-		
-		System.out.println(communes.size());
 
 	}
 
@@ -34,6 +47,9 @@ public class ModelApp {
 		return this.categories.get(key);
 	}
 	void populateMusees(){
+		
+		String tmpDep;
+		
 		HashMap<String, ArrayList<String>> rawData;
 		rawData = cr.read(System.getProperty("user.dir")+"/data/Musee.csv");
 
@@ -62,13 +78,24 @@ public class ModelApp {
 
 			}
 			
-			communes.add(musee.getCommune());
-
+			tmpDep = Integer.toString(musee.getDepartement()).substring(0, 2);
+			if(!localisation.keySet().contains(tmpDep)) {
+				HashSet<String> communes = new HashSet<>();
+				communes.add(musee.getCommune());
+				localisation.put(tmpDep, communes);
+			}
+			else {
+				localisation.get(tmpDep).add(musee.getCommune());
+			}
+			
+			
 		}
 	}
 
 	void populateMonuments(){
 
+		String tmpDep;
+		
 		HashMap<String, ArrayList<String>> rawData;
 		rawData = cr.read(System.getProperty("user.dir")+"/data/MonumentsHistoriquesFrancheComte.csv");
 		Iterator iter = rawData.keySet().iterator();
@@ -93,7 +120,17 @@ public class ModelApp {
 			else {
 				categories.get(monumentHistorique.getCategorie()).add(monumentHistorique);
 			}
-			communes.add(monumentHistorique.getCommune());
+			
+			
+			tmpDep = Integer.toString(monumentHistorique.getDepartement()).substring(0, 2);
+			if(!localisation.keySet().contains(tmpDep)) {
+				HashSet<String> communes = new HashSet<>();
+				communes.add(monumentHistorique.getCommune());
+				localisation.put(tmpDep, communes);
+			}
+			else {
+				localisation.get(tmpDep).add(monumentHistorique.getCommune());
+			}
 		}
 	}
 }

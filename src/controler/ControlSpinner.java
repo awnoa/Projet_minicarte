@@ -10,7 +10,7 @@ public class ControlSpinner extends Control implements ChangeListener {
 
 	public ControlSpinner(ModelApp model, ViewApp view) {
 		super(model, view);
-		view.setControlSpinner(this);
+		view.setSpinnerControler(this);
 	}
 	
 	public void stateChanged(ChangeEvent e) {

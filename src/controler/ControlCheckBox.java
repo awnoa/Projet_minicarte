@@ -17,17 +17,21 @@ public class ControlCheckBox extends Control implements ActionListener {
 		String currentString = cbSelected.getText();
 		if (currentString.equals("tout (dé)sélectionner")) {
 			if (cbSelected.isSelected()) {
+				// maj hashset categorie
 				view.displayAllCategorie();
 			} else {
+				// maj hashset categorie
 				view.hideAllCategorie();
 			}
 		} else {
 			if (cbSelected.isSelected()) {
+				// maj hashset categorie
 				view.displayCategorie(currentString);
 			} else {
+				/// maj hashset categorie
 				view.hideCategorie(currentString);
 			}
 		}
-		//setResultats();
+		//setResultats(); // intersection des trois hashset
 	}
 }

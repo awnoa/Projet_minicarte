@@ -12,7 +12,7 @@ public class PointInteretView {
 	int posY;
 	String categorie;
 	
-	public PointInteretView(ImageIcon icon,String categorie, int posX, int posY) {
+	public PointInteretView(ImageIcon icon, String categorie, int posX, int posY) {
 		this.icon = icon;
 		this.posX = posX;
 		this.posY = posY;
