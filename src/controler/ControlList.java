@@ -1,6 +1,7 @@
 package controler;
 
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
@@ -21,7 +22,7 @@ public class ControlList extends Control implements ListSelectionListener {
 	}
 	
 	public void valueChanged(ListSelectionEvent e) {
-		//
+
 		if (e.getSource() == view.getListDepartements()) {
 			
 			JList list = view.getListDepartements();
@@ -56,11 +57,14 @@ public class ControlList extends Control implements ListSelectionListener {
 				list.setSelectionInterval(0, list.getModel().getSize());
 				toutEstSelectionne = true;
 				list.removeSelectionInterval(0, 0);
-			} 
+			}
+				//ArrayList<String> liste = (ArrayList<String>) view.getListCommunes().getSelectedValuesList();
 			
 			// à chaque fois on reprend on met à jour idCritereLocalisation avec élement sélectionné
 		}
 		//setResultats(); // intersection des trois hashset
 	}
+	
+	
 	
 }

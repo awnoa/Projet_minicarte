@@ -1,8 +1,12 @@
 package controler;
 
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.HashSet;
+
 import javax.swing.*;
 import view.ViewApp;
+import model.CritereCategorie;
 import model.ModelApp;
 
 public class ControlCheckBox extends Control implements ActionListener {
@@ -15,10 +19,13 @@ public class ControlCheckBox extends Control implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JCheckBox cbSelected = (JCheckBox) e.getSource();
 		String currentString = cbSelected.getText();
+		HashMap<String, Object> categorie = new HashMap<>();
+		categorie.put("categorie", currentString);
+		
 		if (currentString.equals("tout (dé)sélectionner")) {
 			if (cbSelected.isSelected()) {
 				// maj hashset categorie
-				view.displayAllCategorie();
+				model.setHashCategorie(view.displayAllCategorie());
 			} else {
 				// maj hashset categorie
 				view.hideAllCategorie();
@@ -26,12 +33,12 @@ public class ControlCheckBox extends Control implements ActionListener {
 		} else {
 			if (cbSelected.isSelected()) {
 				// maj hashset categorie
-				view.displayCategorie(currentString);
+				model.setHashCategorie(view.addCritereCategorie(currentString));
 			} else {
 				/// maj hashset categorie
-				view.hideCategorie(currentString);
+				view.removeCritereCategorie(currentString);
 			}
 		}
-		//setResultats(); // intersection des trois hashset
+		view.paintIcons();
 	}
 }

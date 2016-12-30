@@ -14,6 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.ietf.jgss.Oid;
+
 import model.PointInteret;
 
 public class MapPanel extends JPanel{
@@ -67,6 +69,9 @@ public class MapPanel extends JPanel{
 			}
 		}
 
+	}
+	public void resetPoints(){
+		points = new ArrayList<>();
 	}
 
 	public ArrayList<PointInteretView> getDisplayedPoints() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 public class ModelApp {
 
@@ -12,9 +13,9 @@ public class ModelApp {
 	// ou alors on rajoute un id dans pointinteret
 	public int currentId;
 	HashMap<Integer, PointInteret> data;
-	
+
 	public HashMap<String, ArrayList<PointInteret>> categories;
-	
+
 	// pour liste departements & communes
 	public HashMap<String, HashSet<String>> localisation;
 
@@ -26,7 +27,7 @@ public class ModelApp {
 	public HashSet<Integer> idCritereCategories;
 	public HashSet<Integer> idCritereLocalisation;
 	public HashSet<Integer> idCritereNom;
-	
+
 	public HashMap<Integer, PointInteret> getData() {
 		return data;
 	}
@@ -36,23 +37,26 @@ public class ModelApp {
 
 		currentId = 0;
 		data = new HashMap<>();
-		
+
 		categories = new HashMap<>();
 		localisation = new HashMap<>();
-		
+
 		populateMusees();
 		populateMonuments();
+		idCritereCategories = new HashSet<>();
+		idCritereNom = new HashSet<>();
+		idCritereLocalisation = new HashSet<>();
 
 	}
 
 	public ArrayList<PointInteret> getCategorie(String key){
 		return this.categories.get(key);
 	}
-	
+
 	void populateMusees(){
-		
+
 		String tmpDep;
-		
+
 		HashMap<String, ArrayList<String>> rawData;
 		rawData = cr.read(System.getProperty("user.dir")+"/data/Musee.csv");
 
@@ -61,7 +65,7 @@ public class ModelApp {
 		String first = (String) iter.next();
 		HashMap<String,String> dataMusee ;
 		Musee musee;
-		
+
 		for (int i = 0; i < rawData.get(first).size(); i++) {
 			dataMusee = new HashMap<>();
 
@@ -72,7 +76,7 @@ public class ModelApp {
 
 			data.put(currentId, musee);
 			currentId++;
-			
+
 			if(!categories.keySet().contains(musee.getCategorie())){
 				ArrayList<PointInteret> pts = new ArrayList<>();
 				pts.add(musee);
@@ -82,7 +86,7 @@ public class ModelApp {
 				categories.get(musee.getCategorie()).add(musee);
 
 			}
-			
+
 			tmpDep = Integer.toString(musee.getDepartement()).substring(0, 2);
 			if(!localisation.keySet().contains(tmpDep)) {
 				HashSet<String> communes = new HashSet<>();
@@ -92,15 +96,15 @@ public class ModelApp {
 			else {
 				localisation.get(tmpDep).add(musee.getCommune());
 			}
-			
-			
+
+
 		}
 	}
 
 	void populateMonuments(){
 
 		String tmpDep;
-		
+
 		HashMap<String, ArrayList<String>> rawData;
 		rawData = cr.read(System.getProperty("user.dir")+"/data/MonumentsHistoriquesFrancheComte.csv");
 		Iterator iter = rawData.keySet().iterator();
@@ -116,10 +120,10 @@ public class ModelApp {
 				dataMonuments.put(key, rawData.get(key).get(i));
 			}
 			monumentHistorique = new MonumentHistorique(dataMonuments);
-			
+
 			data.put(currentId, monumentHistorique);
 			currentId++;
-			
+
 			if(!categories.keySet().contains(monumentHistorique.getCategorie())){
 				ArrayList<PointInteret> pts = new ArrayList<>();
 				pts.add(monumentHistorique);
@@ -128,8 +132,8 @@ public class ModelApp {
 			else {
 				categories.get(monumentHistorique.getCategorie()).add(monumentHistorique);
 			}
-			
-			
+
+
 			tmpDep = Integer.toString(monumentHistorique.getDepartement()).substring(0, 2);
 			if(!localisation.keySet().contains(tmpDep)) {
 				HashSet<String> communes = new HashSet<>();
@@ -140,5 +144,32 @@ public class ModelApp {
 				localisation.get(tmpDep).add(monumentHistorique.getCommune());
 			}
 		}
+	}
+
+	public void setHashCategorie(HashSet<Integer> addCritere) {
+		idCritereCategories = addCritere;
+
+	}
+
+	public HashSet<Integer> mergeHashsets(){
+
+		HashSet<Integer> ids = new HashSet<>();
+		ids.addAll(idCritereCategories);
+		ids.addAll(idCritereLocalisation);
+		ids.addAll(idCritereNom);
+
+		return ids;
+
+	}
+
+	public void addHashCategorie(HashSet<Integer> addCritereCategorie) {
+		idCritereCategories.addAll(addCritereCategorie);
+		
+	}
+
+	public void setHashNom(HashSet<Integer> addCritereNom) {
+		idCritereNom = addCritereNom;
+
+		
 	}
 }

@@ -17,7 +17,7 @@ public class ControlButton extends Control implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == view.getButtonValider()) {
-			System.out.println("recherche avec "+view.getSaisieNom().getText());
+			model.setHashNom(view.addCritereNom(view.getSaisieNom().getText()));
 			// maj idCritereNom
 			//setResultats(); // intersection des trois hashset
 		} else if (e.getSource() == view.panInfoPointsInterets.getButPrecedent()) {
@@ -27,5 +27,6 @@ public class ControlButton extends Control implements ActionListener {
 			view.getPanInformations().displayNextPage();
 			// set data affiché
 		}
+		view.paintIcons();
 	}
 }
