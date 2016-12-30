@@ -409,4 +409,8 @@ public class ViewApp extends JFrame {
 	public JTextField getSaisieNom() {
 		return saisieNom;
 	}
+	
+	public DefaultListModel getListModelCommunes() {
+		return listModelCommunes;
+	}
 }
