@@ -1,21 +1,10 @@
 package view;
 
-/*
- * Si on diminue le spinner alors on remove de la liste
- * si on augmente on remove tout de la list et on remplie avec les cb cochés + si les conditions sont vérifiées
- */
-import model.ModelApp;
-import model.PointInteret;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.*;
-
-import controler.ControlCheckBox;
-
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +13,35 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.border.Border;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionListener;
+
+/*
+ * Si on diminue le spinner alors on remove de la liste
+ * si on augmente on remove tout de la list et on remplie avec les cb cochés + si les conditions sont vérifiées
+ */
+import model.ModelApp;
+import model.PointInteret;
 
 public class ViewApp extends JFrame {
 
@@ -46,8 +64,9 @@ public class ViewApp extends JFrame {
 	
 	private DefaultListModel listModelCommunes;
 
-	private MapPanel mapPaneltest;
 	public InfosPointInteretView panInfoPointsInterets;
+	private ArrayList<PointInteret> displayedPoints;
+	
 
 	public ViewApp(ModelApp model) {
 		
@@ -76,6 +95,7 @@ public class ViewApp extends JFrame {
 	private void initCategories() {
 		
 		categories = new ArrayList<>();
+		displayedPoints = new ArrayList<>();
 		for (Iterator iterator = model.categories.keySet().iterator(); iterator.hasNext();) {
 			final String currentString = (String) iterator.next();
 			//System.out.println(currentString);
@@ -288,10 +308,10 @@ public class ViewApp extends JFrame {
 		setVisible(visibility);
 	}
 	
-	public void addIcon(ImageIcon i, String key, float x, float y){
+	public void addIcon(ImageIcon i, PointInteret pt, float x, float y){
 		
 		labMap.addPointInteret(new PointInteretView(
-				i,key,
+				i,pt,
 				toMapCoordX(x, labMap.getPreferredSize().width, i.getIconWidth()),
 				toMapCoordY(y, labMap.getPreferredSize().height, i.getIconHeight())
 				));
@@ -338,6 +358,9 @@ public class ViewApp extends JFrame {
 		butValider.addActionListener(listener);
 		panInfoPointsInterets.setButtonControler(listener);
 	}
+	public void setMapControler(MouseListener listener){
+		labMap.addMouseListener(listener);
+	}
 	
 	public void displayCategorie(String key){
 		
@@ -346,14 +369,20 @@ public class ViewApp extends JFrame {
 		withoutAccent = withoutAccent.trim();
 		ImageIcon i = new ImageIcon(System.getProperty("user.dir")+"/images/"+withoutAccent+".png");
 		for (PointInteret pt : this.model.getCategorie(key)) {
-			addIcon(i,key, pt.getLongitude(), pt.getLatitude());
+			addIcon(i,pt, pt.getLongitude(), pt.getLatitude());
+			displayedPoints.add(pt);
 		}
 		labMap.repaint();
 		
 	}
 	
 	public void hideCategorie(String key){
-		
+		for (java.util.Iterator<PointInteret> iterator = displayedPoints.iterator(); iterator.hasNext(); ) {
+			  PointInteret pt = iterator.next();
+			  if(pt.getCategorie().equals(key)){
+			    iterator.remove();
+			  }
+			}
 		labMap.removePointInteretView(key);
 		labMap.repaint();
 	}
@@ -412,5 +441,20 @@ public class ViewApp extends JFrame {
 	
 	public DefaultListModel getListModelCommunes() {
 		return listModelCommunes;
+	}
+	public void refreshMapInformations(){
+		panInfoPointsInterets.refresh();
+	}
+	public ArrayList<PointInteretView> getDisplayedPoints(){
+		return labMap.getDisplayedPoints();
+	}
+
+	public InfosPointInteretView getPanInformations() {
+		// TODO Auto-generated method stub
+		return panInfoPointsInterets;
+	}
+
+	public void resetPanInformations() {
+		panInfoPointsInterets.reset();
 	}
 }

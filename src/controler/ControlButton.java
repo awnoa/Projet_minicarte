@@ -21,10 +21,10 @@ public class ControlButton extends Control implements ActionListener {
 			// maj idCritereNom
 			//setResultats(); // intersection des trois hashset
 		} else if (e.getSource() == view.panInfoPointsInterets.getButPrecedent()) {
-			System.out.println("précédent");
+			view.getPanInformations().displayPreviousPage();
 			// set data affiché
 		} else if (e.getSource() == view.panInfoPointsInterets.getButSuivant()) {
-			System.out.println("suivant");
+			view.getPanInformations().displayNextPage();
 			// set data affiché
 		}
 	}

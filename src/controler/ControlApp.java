@@ -12,6 +12,7 @@ public class ControlApp {
 	public ControlSpinner controlSpinner;
 	public ControlList controlList;
 	public ControlButton controlButton;
+	public ControlMap controlMap;
 	
 	public ControlApp(ModelApp model) {
 		this.model = model;
@@ -20,6 +21,7 @@ public class ControlApp {
 		controlSpinner = new ControlSpinner(model, view);
 		controlList = new ControlList(model, view);
 		controlButton = new ControlButton(model, view);
+		controlMap = new ControlMap(model, view);
 		view.changeDisplay(true);
 	}
 }

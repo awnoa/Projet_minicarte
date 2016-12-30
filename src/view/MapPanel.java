@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -18,10 +19,12 @@ public class MapPanel extends JPanel{
 	private BufferedImage icon;
 	private ImageIcon mapImage;
 	private ArrayList<PointInteretView> points ;
+	private Rectangle selection;
 
 	public MapPanel(ImageIcon imageMap) {
 		points = new ArrayList<>();
 		this.mapImage = imageMap;
+	//	selection = new Rectangle(x, y, width, height)
 	}
 
 	@Override
@@ -59,5 +62,10 @@ public class MapPanel extends JPanel{
 			  }
 			}
 
+	}
+
+	public ArrayList<PointInteretView> getDisplayedPoints() {
+		// TODO Auto-generated method stub
+		return points;
 	}
 }

@@ -5,18 +5,21 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
+import model.PointInteret;
+
 public class PointInteretView {
 	
 	ImageIcon icon;
 	int posX;
 	int posY;
+	PointInteret modelInformations;
 	String categorie;
 	
-	public PointInteretView(ImageIcon icon, String categorie, int posX, int posY) {
+	public PointInteretView(ImageIcon icon, PointInteret modelInformations, int posX, int posY) {
 		this.icon = icon;
 		this.posX = posX;
 		this.posY = posY;
-		this.categorie = categorie;
+		this.modelInformations = modelInformations;
 	}
 
 	public ImageIcon getIcon() {
@@ -45,7 +48,12 @@ public class PointInteretView {
 
 	public String getCategorie() {
 		// TODO Auto-generated method stub
-		return categorie ;
+		return modelInformations.getCategorie() ;
+	}
+
+	public PointInteret getPointInformations() {
+		// TODO Auto-generated method stub
+		return modelInformations;
 	}
 
 }
