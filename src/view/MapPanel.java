@@ -1,7 +1,9 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -24,7 +26,7 @@ public class MapPanel extends JPanel{
 	public MapPanel(ImageIcon imageMap) {
 		points = new ArrayList<>();
 		this.mapImage = imageMap;
-	//	selection = new Rectangle(x, y, width, height)
+		selection = new Rectangle(0,0,0,0);
 	}
 
 	@Override
@@ -35,7 +37,7 @@ public class MapPanel extends JPanel{
 		setPreferredSize(getPreferredSize());	
 
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
@@ -43,6 +45,9 @@ public class MapPanel extends JPanel{
 		for (PointInteretView p : points) {
 			g.drawImage(p.getIcon().getImage(), p.getPosX(), p.getPosY(), null);
 		}
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(Color.red);
+		g2.drawRect((int)selection.getX(), (int)selection.getY(), (int) selection.getWidth(),(int) selection.getHeight());
 	}
 	@Override
 	public Dimension getPreferredSize() {
@@ -56,16 +61,19 @@ public class MapPanel extends JPanel{
 
 	public void removePointInteretView(String key) {
 		for (java.util.Iterator<PointInteretView> iterator = points.iterator(); iterator.hasNext(); ) {
-			  PointInteretView pt = iterator.next();
-			  if(pt.getCategorie().equals(key)){
-			    iterator.remove();
-			  }
+			PointInteretView pt = iterator.next();
+			if(pt.getCategorie().equals(key)){
+				iterator.remove();
 			}
+		}
 
 	}
 
 	public ArrayList<PointInteretView> getDisplayedPoints() {
 		// TODO Auto-generated method stub
 		return points;
+	}
+	public void displaySelection(Rectangle r){
+		selection = r;
 	}
 }

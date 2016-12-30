@@ -457,4 +457,9 @@ public class ViewApp extends JFrame {
 	public void resetPanInformations() {
 		panInfoPointsInterets.reset();
 	}
+
+	public MapPanel getMap() {
+		// TODO Auto-generated method stub
+		return labMap;
+	}
 }

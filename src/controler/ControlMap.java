@@ -1,5 +1,6 @@
 package controler;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -19,16 +20,17 @@ public class ControlMap extends Control implements MouseListener {
 	public void mouseClicked(MouseEvent arg0) {
 		int x = arg0.getX();
 		int y = arg0.getY();
-		
+		view.getMap().displaySelection(new Rectangle(x-5,y-5,10,10));
 		view.resetPanInformations();
 		
 		for(PointInteretView p : view.getDisplayedPoints()){
-			if(p.getPosX()<=x+10 && p.getPosX()>=x-10)
-				if(p.getPosY()<=y+10 && p.getPosY()>=y-10){
+			if(p.getPosX()<=x+13&& p.getPosX()>=x-13)
+				if(p.getPosY()<=y+13 && p.getPosY()>=y-13){
 					view.getPanInformations().addPointInteret(p.getPointInformations());
 				}
 		}
 		view.refreshMapInformations();
+		view.repaint();
 
 	}
 
