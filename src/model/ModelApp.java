@@ -10,7 +10,8 @@ public class ModelApp {
 
 	// il faudrait que ce soit une hashset comme ça chaque element aurait un id entier
 	// ou alors on rajoute un id dans pointinteret
-	ArrayList<PointInteret> data;
+	public int currentId;
+	HashMap<Integer, PointInteret> data;
 	
 	public HashMap<String, ArrayList<PointInteret>> categories;
 	
@@ -26,14 +27,15 @@ public class ModelApp {
 	public HashSet<Integer> idCritereLocalisation;
 	public HashSet<Integer> idCritereNom;
 	
-	public ArrayList<PointInteret> getData() {
+	public HashMap<Integer, PointInteret> getData() {
 		return data;
 	}
 	CsvReader cr =  new CsvReader();
 
 	public ModelApp() {
 
-		data = new ArrayList<>();
+		currentId = 0;
+		data = new HashMap<>();
 		
 		categories = new HashMap<>();
 		localisation = new HashMap<>();
@@ -46,6 +48,7 @@ public class ModelApp {
 	public ArrayList<PointInteret> getCategorie(String key){
 		return this.categories.get(key);
 	}
+	
 	void populateMusees(){
 		
 		String tmpDep;
@@ -67,7 +70,9 @@ public class ModelApp {
 			}
 			musee = new Musee(dataMusee);
 
-			data.add(musee);
+			data.put(currentId, musee);
+			currentId++;
+			
 			if(!categories.keySet().contains(musee.getCategorie())){
 				ArrayList<PointInteret> pts = new ArrayList<>();
 				pts.add(musee);
@@ -111,7 +116,10 @@ public class ModelApp {
 				dataMonuments.put(key, rawData.get(key).get(i));
 			}
 			monumentHistorique = new MonumentHistorique(dataMonuments);
-			data.add(monumentHistorique);
+			
+			data.put(currentId, monumentHistorique);
+			currentId++;
+			
 			if(!categories.keySet().contains(monumentHistorique.getCategorie())){
 				ArrayList<PointInteret> pts = new ArrayList<>();
 				pts.add(monumentHistorique);
